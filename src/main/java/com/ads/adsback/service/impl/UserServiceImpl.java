@@ -23,12 +23,9 @@ public class UserServiceImpl extends CRUDImpl<User,Integer> implements IUserServ
 
     @Override
     public User save(User user) throws Exception {
-        Predicate<User> validateUsername = u -> userRepository.findOneByUsername(u.getUsername()) != null;
         Predicate<User> validateEmail = u -> userRepository.findOneByEmail(u.getEmail()) != null;
         String roleName= user.getRole().getRole();
         Role role = roleRepository.findOneByRole(roleName);
-        if(validateUsername.test(user))
-            throw new ValidationException("Error, nombre de usuario ya registrado");
 
         if(validateEmail.test(user))
             throw new ValidationException("Error, email ya registrado");
@@ -39,9 +36,6 @@ public class UserServiceImpl extends CRUDImpl<User,Integer> implements IUserServ
             user.setRole(role);
         }
         return super.save(user);
-    }
-    public void validateRole(IUserRepository userRepository){
-
     }
 
     @Override

@@ -14,6 +14,7 @@ public class LogoutService implements LogoutHandler {
 
     @Autowired
     private ITokenRepository tokenRepository;
+
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         final String tokenHeader = request.getHeader("Authorization");

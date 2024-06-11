@@ -1,5 +1,6 @@
 package com.ads.adsback.model.DTO;
 
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,14 +12,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProductDTO {
+public class RoleDTO {
 
-    private Integer idProduct;
+    private Integer idRole;
 
-    private String name;
-
-    private String description;
-
-    private Double price;
+    private String role;
 
 }

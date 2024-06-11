@@ -20,7 +20,4 @@ public class Role {
     @Column(length = 10)
     private String role;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private boolean enable = true;
-
 }

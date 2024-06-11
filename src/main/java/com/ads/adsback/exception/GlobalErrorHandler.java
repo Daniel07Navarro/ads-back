@@ -72,7 +72,7 @@ public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         String message = ex.getFieldErrors()
                 .stream()
-                .map(e -> e.getField() + " ; " + e.getDefaultMessage())
+                .map(e -> e.getField() + " : " + e.getDefaultMessage())
                 .collect(Collectors.joining(";"));
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .dateTime(LocalDateTime.now())

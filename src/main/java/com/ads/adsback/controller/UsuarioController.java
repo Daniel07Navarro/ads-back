@@ -1,9 +1,12 @@
 package com.ads.adsback.controller;
 
 
+import com.ads.adsback.model.DTO.UserDTO;
 import com.ads.adsback.model.entites.User;
 import com.ads.adsback.service.IRoleService;
 import com.ads.adsback.service.IUserService;
+import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,9 @@ public class UsuarioController {
     @Autowired
     private IRoleService roleService;
 
+    @Autowired
+    private ModelMapper userMapper;
+
     private final PasswordEncoder passwordEncoder;
 
     public UsuarioController(PasswordEncoder passwordEncoder){
@@ -35,26 +41,18 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody User user) throws Exception {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return new ResponseEntity<>(userService.save(user),HttpStatus.CREATED);
-        /*
-        Predicate<User> validateUsername = u -> userService.findOneByUsername(u.getUsername()) != null;
-        Predicate<User> validateEmail = u -> userService.findOneByEmail(u.getEmail()) != null;
-        String roleName = user.getRole().getRole();
-        Role role = roleService.findOneByRole(roleName);
-        if(validateUsername.test(user))
-            return new ResponseEntity<>(Map.of("mensaje","El username se encuentra en uso"), HttpStatus.CONFLICT);
+    public ResponseEntity<UserDTO> save(@RequestBody @Valid UserDTO userDTO) throws Exception {
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        User user = userService.save(convertDTOToUser(userDTO));
+        return new ResponseEntity<>(convertUserToDTO(user),HttpStatus.CREATED);
+    }
 
-        if(validateEmail.test(user))
-            return new ResponseEntity<>(Map.of("mensaje","El email se encuentra en uso"), HttpStatus.CONFLICT);
+    private UserDTO convertUserToDTO(User user){
+        return userMapper.map(user, UserDTO.class);
+    }
 
-        if(role == null){
-            roleService.save(user.getRole());
-        }else{
-            user.setRole(role);
-        }*/
-
+    private User convertDTOToUser(UserDTO userDTO){
+        return userMapper.map(userDTO, User.class);
     }
 
 }

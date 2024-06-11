@@ -20,10 +20,16 @@ public class User {
     @EqualsAndHashCode.Include
     private Integer idUser;
 
-    @Column(unique = true,length = 20)
-    private String username;
+    @Column(length =50)
+    private String name;
 
-    @Column(unique = true,length = 30)
+    @Column(length = 50)
+    private String lastName;
+
+    @Column(length = 50)
+    private String maternalLastName;
+
+    @Column(unique = true,length = 60)
     private String email;
 
     @Column(length = 150)
@@ -33,10 +39,10 @@ public class User {
     @JoinColumn(name = "id_role",foreignKey = @ForeignKey(name = "FK_User_Role"))
     private Role role;
 
-    private String securityQuestion;
-
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Token> tokens;
+
+    private boolean enabled;
 
     /*MUCHOS USUARIOS VAN A TENER UN ROL
     @ManyToMany(cascade = CascadeType.ALL)
